@@ -13,13 +13,12 @@ module.exports = function(config) {
     frameworks: ['jspm', 'jasmine'],
 
     jspm: {
-      // Edit this to your needs
+      config: 'config.js',
       loadFiles: ['src/**/*.ts', 'test/unit/**/*.js'],
       paths: {
         '*': '*.js'
       }
     },
-
 
     // list of files / patterns to load in the browser
     files: [],
@@ -34,7 +33,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'test/**/*.js': ['babel'],
-      'src/**/*.ts': ['karma-typescript-preprocessor']
+      'src/**/*.ts': ['karma-typescript-preprocessor', 'coverage']
       //typescript preprocessors [karma-typescript-preprocessor, karma-simpletsc-preprocessor, karma-tsc-preprocessor, karma-typescript-preprocessor-without-copy]
     },
     'babelPreprocessor': {
@@ -67,12 +66,23 @@ module.exports = function(config) {
         return path.replace(/\.ts$/, '.js');
       }
     },
+    coverageReporter: {
+      reporters: [
+        {
+          type: 'text-summary'
+        },
+        {
+          type: 'html',
+          dir: 'coverage/'
+        }
+      ]
+    },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
 
     // web server port
@@ -94,7 +104,13 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['PhantomJs'],
+
+
+    phantomjsLauncher: {
+      // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
+      exitOnResourceError: true
+    },
 
 
     // Continuous Integration mode
